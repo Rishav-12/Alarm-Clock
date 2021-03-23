@@ -8,6 +8,8 @@ root.title("Clock")
 alarm_time = ""
 
 def getTime():
+	'''This function updates the time and checks if it matches the alarm time.
+	If it matches, the alarm sound is played'''
 	time  = datetime.now().strftime("%H:%M:%S")
 	if time == alarm_time:
 		playsound('alarm_tone.mp3', block = False)
@@ -15,6 +17,7 @@ def getTime():
 	label.after(1000, getTime)
 
 def alarm():
+	'''Function to set the alarm time in a Toplevel window'''
 	global hour, mint, sec
 	top = Toplevel(root)
 	top.title("Set An Alarm")
@@ -33,6 +36,7 @@ def alarm():
 	confirm.grid(columnspan = 3, padx = (130, 10))
 
 def confirmAlarm():
+	'''This function obtains and sets the alarm time'''
 	global hour, mint, sec, alarm_time
 	hour_val = hour.get().strip()
 	mint_val = mint.get().strip()
@@ -40,6 +44,7 @@ def confirmAlarm():
 
 	alarm_time = f"{hour_val}:{mint_val}:{sec_val}"
 
+# Tkinter Widgets
 label = Label(root, text = "", font = "ds-digital 80", bg = "black", fg = "cyan")
 label.pack()
 
