@@ -55,6 +55,7 @@ def confirmAlarm():
 
 def stopAlarm():
 	mixer.music.stop()
+	stopAlarm.config(state = DISABLED)
 
 # Tkinter Widgets
 label = Label(root, text = "", font = "ds-digital 80", bg = "black", fg = "cyan")
