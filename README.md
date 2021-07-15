@@ -5,9 +5,8 @@ A simple GUI clock where you can also set alarm
 * Digital clock
 * Use the 'Alarm' button to set the time of the alarm
 * Everything works in 24-hour format
-* May be a little buggy at times when playing the alarm sound
 
-Pygame is used for compatibility on all platforms.
+Pygame is used for playing sound to keep it compatible across platforms.
 
 # Installation / Setting-up
 To make this work on Linux, I had to issue the following commands:
