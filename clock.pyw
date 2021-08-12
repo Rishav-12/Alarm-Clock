@@ -1,9 +1,17 @@
 from tkinter import *
 from datetime import datetime
-from playsound import playsound
+import pygame
+from pygame import mixer
 
 root = Tk()
 root.title("Clock")
+
+pygame.init()
+
+try:
+	mixer.music.load('alarm_tone.mp3')
+except pygame.error:
+	mixer.music.load('alarm_tone.wav')
 
 alarm_time = ""
 
@@ -12,7 +20,8 @@ def getTime():
 	If it matches, the alarm sound is played'''
 	time  = datetime.now().strftime("%H:%M:%S")
 	if time == alarm_time:
-		playsound('alarm_tone.mp3', block = False)
+		mixer.music.play(-1)
+		stopAlarm.config(state = NORMAL)
 	label.config(text = time)
 	label.after(1000, getTime)
 
@@ -44,12 +53,19 @@ def confirmAlarm():
 
 	alarm_time = f"{hour_val}:{mint_val}:{sec_val}"
 
+def stopAlarm():
+	mixer.music.stop()
+	stopAlarm.config(state = DISABLED)
+
 # Tkinter Widgets
 label = Label(root, text = "", font = "ds-digital 80", bg = "black", fg = "cyan")
 label.pack()
 
 setAlarm = Button(root, text = 'Alarm', padx = 5, command = alarm)
 setAlarm.pack(pady = 10)
+
+stopAlarm = Button(root, text = 'Stop', state = DISABLED, padx = 5, command = stopAlarm)
+stopAlarm.pack(pady = 10)
 
 getTime()
 
