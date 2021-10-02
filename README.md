@@ -1,10 +1,10 @@
 # Alarm-Clock
-A simple GUI clock where you can also set alarm
+Simple Digital Clock
 
 ### Description and Usage
-* Digital clock
-* Use the 'Alarm' button to set the time of the alarm
-* Everything works in 24-hour format
+* 24-hour format digital clock
+* Use the 'Alarm' button to set alarm
+* List of upcoming alarms shown
 
 Pygame is used for playing sound to keep it compatible across platforms.
 
