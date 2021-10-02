@@ -13,15 +13,21 @@ try:
 except pygame.error:
 	mixer.music.load('alarm_tone.wav')
 
-alarm_time = ""
+list_of_alarms = []
 
 def getTime():
 	'''This function updates the time and checks if it matches the alarm time.
 	If it matches, the alarm sound is played'''
+	global list_of_alarms
 	time  = datetime.now().strftime("%H:%M:%S")
-	if time == alarm_time:
-		mixer.music.play(-1)
-		stopAlarm.config(state = NORMAL)
+	if list_of_alarms:
+		for index, alarm in enumerate(list_of_alarms):
+			if time == alarm:
+				mixer.music.play(-1)
+				stopAlarm.config(state = NORMAL)
+				list_of_alarms = list_of_alarms[index:]
+				update()
+
 	label.config(text = time)
 	label.after(1000, getTime)
 
@@ -46,16 +52,24 @@ def alarm():
 
 def confirmAlarm():
 	'''This function obtains and sets the alarm time'''
-	global hour, mint, sec, alarm_time
+	global hour, mint, sec
 	hour_val = hour.get().strip()
 	mint_val = mint.get().strip()
 	sec_val = sec.get().strip()
 
-	alarm_time = f"{hour_val}:{mint_val}:{sec_val}"
+	list_of_alarms.append(f"{hour_val}:{mint_val}:{sec_val}")
+	update()
 
 def stopAlarm():
 	mixer.music.stop()
 	stopAlarm.config(state = DISABLED)
+	list_of_alarms.pop(0)
+	update()
+
+def update():
+	alarms['text'] = ""
+	for alarm in list_of_alarms:
+		alarms['text'] += alarm + '\n'
 
 # Tkinter Widgets
 label = Label(root, text = "", font = "ds-digital 80", bg = "black", fg = "cyan")
@@ -66,6 +80,9 @@ setAlarm.pack(pady = 10)
 
 stopAlarm = Button(root, text = 'Stop', state = DISABLED, padx = 5, command = stopAlarm)
 stopAlarm.pack(pady = 10)
+
+alarms = Label(root, text = "")
+alarms.pack(pady = 10)
 
 getTime()
 
