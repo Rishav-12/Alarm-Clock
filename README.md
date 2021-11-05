@@ -1,4 +1,4 @@
-# Alarm-Clock
+# alarm clock
 Simple Digital Clock
 
 ### Description and Usage
