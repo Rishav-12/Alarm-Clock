@@ -7,9 +7,9 @@ from pygame import mixer
 pygame.init()
 
 try:
-	mixer.music.load('alarm_tone.mp3')
+	mixer.music.load('Sounds/alarm_tone.mp3')
 except pygame.error:
-	mixer.music.load('alarm_tone.wav')
+	mixer.music.load('Sounds/alarm_tone.wav')
 
 list_of_alarms = []
 
