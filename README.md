@@ -9,6 +9,9 @@ Simple Digital Clock
 Pygame is used for playing sound to keep it compatible across platforms.
 
 ### Installation / Setting-up
+
+Make sure to install ds-digital font on your system
+
 To make this work on Linux, I had to issue the following commands:
 
 ```

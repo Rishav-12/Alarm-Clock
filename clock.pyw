@@ -1,10 +1,8 @@
-from tkinter import *
-from datetime import datetime
+import PySimpleGUI as sg
+import time
+
 import pygame
 from pygame import mixer
-
-root = Tk()
-root.title("Clock")
 
 pygame.init()
 
@@ -15,77 +13,68 @@ except pygame.error:
 
 list_of_alarms = []
 
-def getTime():
+def get_time():
 	'''Updates the time, checks if alarm should go off'''
+
 	global list_of_alarms
-	time  = datetime.now().strftime("%H:%M:%S")
+	now = time.strftime("%H:%M:%S")
+	window["-TIME-"].update(now)
+
 	if list_of_alarms:
 		for index, alarm in enumerate(list_of_alarms):
-			if time == alarm:
+			if now == alarm:
 				mixer.music.play(-1)
-				stop_alarm_btn.config(state = NORMAL)
+				window["Stop"].update(disabled=False)
 				list_of_alarms = list_of_alarms[index:]
 				update()
 
-	clock.config(text = time)
-	clock.after(1000, getTime)
-
-def alarm():
-	'''Manages a Toplevel window where alarm is set'''
-	global hour, mnt, sec
-	set_alarm_wn = Toplevel(root)
-	set_alarm_wn.title("Set Alarm")
-	set_alarm_wn.geometry("400x400")
-
-	hour = Entry(set_alarm_wn, width = 5, relief = RAISED)
-	hour.grid(row = 0, column = 0, padx = (130, 10), pady = (150, 40))
-
-	mnt = Entry(set_alarm_wn, width = 5, relief = RAISED)
-	mnt.grid(row = 0, column = 1, padx = 10, pady = (150, 40))
-
-	sec = Entry(set_alarm_wn, width = 5, relief = RAISED)
-	sec.grid(row = 0, column = 2, padx = 10, pady = (150, 40))
-	sec.insert(0, '00') # seconds default to '00'
-
-	confirm = Button(set_alarm_wn, text = "Save", command = confirm_alarm, padx = 20)
-	confirm.grid(columnspan = 3, padx = (130, 10))
-
 def confirm_alarm():
 	'''Obtains the alarm time, adds it to the list'''
-	global hour, mnt, sec
-	hour_val = hour.get().strip()
-	mnt_val = mnt.get().strip()
-	sec_val = sec.get().strip()
 
-	list_of_alarms.append(f"{hour_val}:{mnt_val}:{sec_val}")
+	hour_val = values["-HR-"]
+	minute_val = values["-MIN-"]
+
+	if hour_val and minute_val:
+		list_of_alarms.append(f"{hour_val}:{minute_val}:00")
 	update()
 
 def stop_alarm():
 	'''Stops the alarm currently going off'''
+
 	mixer.music.stop()
-	stop_alarm_btn.config(state = DISABLED)
+	window["Stop"].update(disabled=True)
 	list_of_alarms.pop(0)
 	update()
 
 def update():
 	'''Updates the list of alarms'''
-	alarms['text'] = ""
+
+	window["-LST-"].update("")
 	for alarm in list_of_alarms:
-		alarms['text'] += alarm + '\n'
+		window["-LST-"].update(window["-LST-"].get() + alarm + '\t')
 
-# Tkinter Widgets
-clock = Label(root, text = "", font = "ds-digital 80", bg = "black", fg = "cyan")
-clock.pack()
+clock_layout = [[sg.Text("", key="-TIME-",font=("ds-digital", 100),background_color="black",text_color="cyan")]]
 
-alarm_btn = Button(root, text = 'Alarm', padx = 5, command = alarm)
-alarm_btn.pack(pady = 10)
+alarm_layout = [[sg.Text("Hour", size=(20, 1)), sg.Text("Minute", size=(20, 1))],
+				[sg.Input(key="-HR-", size=(20, 1)), sg.Input(key="-MIN-", size=(20, 1))],
+				[sg.Text("", size=(40, 5), key="-LST-")],
+				[sg.Button("Confirm", button_color=("white", "black"))],
+				[sg.Button("Stop", disabled=True, button_color=("white", "black"))]]
 
-stop_alarm_btn = Button(root, text = 'Stop', state = DISABLED, padx = 5, command = stop_alarm)
-stop_alarm_btn.pack(pady = 10)
+layout = [[sg.TabGroup([[sg.Tab("Clock", clock_layout),
+						sg.Tab("Alarm", alarm_layout)]])]]
 
-alarms = Label(root, text = "")
-alarms.pack(pady = 10)
+window = sg.Window('Clock', layout)
 
-getTime()
+while True:
+	event, values = window.read(timeout=100)
+	if event == sg.WINDOW_CLOSED:
+		break
+	if event == "Confirm":
+		confirm_alarm()
+	if event == "Stop":
+		stop_alarm()
 
-root.mainloop()
+	get_time()
+
+window.close()
