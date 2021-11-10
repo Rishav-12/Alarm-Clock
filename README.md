@@ -1,10 +1,7 @@
 # alarm clock
 Simple Digital Clock
 
-### Description and Usage
-* 24-hour format digital clock
-* Use the 'Alarm' button to set alarm
-* List of upcoming alarms shown
+Sounds from freesound.org
 
 Pygame is used for playing sound to keep it compatible across platforms.
 
