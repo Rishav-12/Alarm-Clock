@@ -56,13 +56,13 @@ def update():
 clock_layout = [[sg.Text("", key="-TIME-",font=("ds-digital", 100),background_color="black",text_color="cyan")]]
 
 alarm_layout = [[sg.Text("Hour", size=(20, 1)), sg.Text("Minute", size=(20, 1))],
-				[sg.Input(key="-HR-", size=(20, 1)), sg.Input(key="-MIN-", size=(20, 1))],
-				[sg.Text("", size=(40, 5), key="-LST-")],
-				[sg.Button("Confirm", button_color=("white", "black"))],
-				[sg.Button("Stop", disabled=True, button_color=("white", "black"))]]
+		[sg.Input(key="-HR-", size=(20, 1)), sg.Input(key="-MIN-", size=(20, 1))],
+		[sg.Text("", size=(40, 5), key="-LST-")],
+		[sg.Button("Confirm", button_color=("white", "black"))],
+		[sg.Button("Stop", disabled=True, button_color=("white", "black"))]]
 
 layout = [[sg.TabGroup([[sg.Tab("Clock", clock_layout),
-						sg.Tab("Alarm", alarm_layout)]])]]
+			sg.Tab("Alarm", alarm_layout)]])]]
 
 window = sg.Window('Clock', layout)
 
