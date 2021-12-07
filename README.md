@@ -1,5 +1,4 @@
-# alarm clock
-Simple Digital Clock
+# clockwork
 
 Sounds from freesound.org
 
